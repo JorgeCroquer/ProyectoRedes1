@@ -1,4 +1,4 @@
-from Card import Card
+from Classes.Card import Card
 import random
 
 
