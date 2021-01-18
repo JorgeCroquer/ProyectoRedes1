@@ -1,0 +1,15 @@
+for x in range(len(Deck.cards)):
+    print(x,Deck.cards[x].colour,Deck.cards[x].value)
+
+print("--------------------------------")
+
+for x in range(len(player1.hand)):
+    print(x,player1.hand[x].colour,player1.hand[x].value)
+
+print("--------------------------------")
+
+print(discards[0].colour,discards[0].value)
+
+print("--------------------------------")
+
+print(player1.canPlay(discards[0]))

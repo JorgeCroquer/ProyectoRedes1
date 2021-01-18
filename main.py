@@ -28,6 +28,7 @@ playerTurn = 0
 
 discards.append(Deck.cards.pop(0)) #Agarramos la primera carta del mazo para ser la primera sobre la cual jugar
 
-for x in range(len(Deck.cards)):
-    print(x,Deck.cards[x].colour,Deck.cards[x].value)
+
+
+
 
