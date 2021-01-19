@@ -11,7 +11,6 @@ class Deck:
     def __init__(self):
         colours = ["Rojo","Verde","Azul","Amarillo", "Comodin"]
         values = [1,2,3,4,5,6,7,8,9,"Doble manotazo", "Reversa", "Salta", "Tira un color"]
-
         wilds = ["Cambia color", "Ataque"]
 
         for colour in colours:
