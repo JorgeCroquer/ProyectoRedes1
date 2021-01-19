@@ -4,6 +4,9 @@ from Classes.Card import Card
 from Classes.Deck import Deck
 import pygame,sys
 
+# Rutinas graficas:
+#  Estas rutinas se correrán en el while principal
+#  para que vayan actualizando las cartas de los jugadores
 def identificar(cartaId):
     Mvalues = {
         1:"_1",
@@ -39,9 +42,11 @@ def identificar(cartaId):
 def showOthers():
     sep = 60
     for x in range(1,len(players)):
-        if len(players[x].hand) > 7 and len(players[x].hand) < 15 :
+        if len(players[x].hand) <= 5:
+            sep = 70    
+        if len(players[x].hand) > 5 and len(players[x].hand) < 15 :
             sep = 40
-        if len(players[x].hand) > 15 :
+        if len(players[x].hand) >= 15 :
             sep = 20     
         if x == 1:
             carta = pygame.image.load('img/small/card_back.png').convert() 
@@ -77,7 +82,12 @@ def showHand():
         for x in range(int(len(player1.hand)/2),len(player1.hand)):
             carta = identificar(player1.hand[x])    
             screen.blit(carta,(200+y*110,600))
-            y=y+1     
+            y=y+1
+
+def showDiscard():
+    carta = identificar(discards[len(discards)-1])
+    screen.blit(carta,(600,250)) 
+
 #Especificamos los detalles de la pantalla
 pygame.init()
 screen = pygame.display.set_mode((1200,720))
@@ -103,10 +113,10 @@ Deck.shuffleDeck()
 discards = [] #pila donde se van jugando las cartas
 
 #Se reparten las cartas. Cada quien agarra 7 del Deck
-player1.draw(7,Deck)
-player2.draw(7,Deck)
-player3.draw(7,Deck)
-player4.draw(7,Deck)
+player1.draw(15,Deck)
+player2.draw(5,Deck)
+player3.draw(17,Deck)
+player4.draw(2,Deck)
 
 players = [player1, player2, player3,player4]
 
@@ -116,8 +126,17 @@ playerTurn = 0
 
 discards.append(Deck.cards.pop(0)) #Agarramos la primera carta del mazo para ser la primera sobre la cual jugar
 
+#Imprimimos valores por consola para constrastar con los graficos
 for x in range(len(player1.hand)):
-    print(x,player1.hand[x].colour,player1.hand[x].value)
+    print('{}) {} {}'.format(x,player1.hand[x].colour,player1.hand[x].value))
+print("--------------------------------")    
+print(discards[0].colour,discards[0].value)
+
+#Mostramos el sprite del mazo (que proximamente deberia ser cambiado a una maquina lanzacartas jaja)
+def showDeck():
+    carta = pygame.image.load('img/small/card_back.png').convert()
+    screen.blit(carta,(400,250)) 
+
 
 while True:
     for event in pygame.event.get():
@@ -126,6 +145,8 @@ while True:
             sys.exit()
     screen.blit(bg_surface,(0,0))
     showHand()
-    showOthers()       
+    showOthers()  
+    showDiscard()
+    showDeck()     
     pygame.display.update()
     clock.tick(120)
