@@ -37,9 +37,12 @@ def identificar(cartaId):
     return carta
 
 def showOthers():
-    Cx = 0
-    Cy = 0
-    for x in range(1,len(players)): 
+    sep = 60
+    for x in range(1,len(players)):
+        if len(players[x].hand) > 7 and len(players[x].hand) < 15 :
+            sep = 40
+        if len(players[x].hand) > 15 :
+            sep = 20     
         if x == 1:
             carta = pygame.image.load('img/small/card_back.png').convert() 
             carta = pygame.transform.rotate(carta,90)
@@ -52,20 +55,29 @@ def showOthers():
         for y in range(len(players[x].hand)):
             if x == 1: 
                 Cx = 1050
-                Cy = 100+y*60
+                Cy = 100+y*sep
             if x == 2: 
-                Cx = 300+y*60
+                Cx = 300+y*sep
                 Cy = -10
             if x == 3: 
                 Cx = -45
-                Cy = 100+y*60
+                Cy = 100+y*sep
             screen.blit(carta,(Cx,Cy)) 
 
 def showHand():
-    for x in range(len(player1.hand)):
-        carta = identificar(player1.hand[x])    
-        screen.blit(carta,(180+x*110,520)) 
-
+    y=0
+    if len(player1.hand) < 8:
+        for x in range(len(player1.hand)):
+            carta = identificar(player1.hand[x])    
+            screen.blit(carta,(180+x*110,520)) 
+    else:
+        for x in range(int(len(player1.hand)/2)):
+            carta = identificar(player1.hand[x])    
+            screen.blit(carta,(220+x*110,470)) 
+        for x in range(int(len(player1.hand)/2),len(player1.hand)):
+            carta = identificar(player1.hand[x])    
+            screen.blit(carta,(200+y*110,600))
+            y=y+1     
 #Especificamos los detalles de la pantalla
 pygame.init()
 screen = pygame.display.set_mode((1200,720))
