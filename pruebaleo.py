@@ -73,14 +73,17 @@ def showHand():
     y=0
     if len(player1.hand) < 8:
         for x in range(len(player1.hand)):
-            # carta = identificar(player1.hand[x])    
+            player1.hand[x].x = 180+x*110
+            player1.hand[x].y = 520
             screen.blit(player1.hand[x].surface,(180+x*110,520)) 
     else:
         for x in range(int(len(player1.hand)/2)):
-            # carta = identificar(player1.hand[x])    
+            player1.hand[x].x = 220+x*110
+            player1.hand[x].y = 470
             screen.blit(player1.hand[x].surface,(220+x*110,470)) 
         for x in range(int(len(player1.hand)/2),len(player1.hand)):
-            # carta = identificar(player1.hand[x])    
+            player1.hand[x].x = 200+y*110
+            player1.hand[x].y = 600 
             screen.blit(player1.hand[x].surface,(200+y*110,600))
             y=y+1
 
@@ -139,10 +142,15 @@ def showDeck():
 
 
 while True:
+    pos = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for x in range(len(player1.hand)):
+                if player1.hand[x].isOver(pos):
+                    print("clicked")    
     screen.blit(bg_surface,(0,0))
     showHand()
     showOthers()  
