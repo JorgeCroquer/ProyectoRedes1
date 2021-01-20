@@ -2,20 +2,11 @@
 
 class Card:
     
-    def __init__(self, colour, value, surface):
+    def __init__(self, colour, value, surface=''):
         self.colour = colour
         self.value = value
         self.surface = surface
         
-class button():
-    def __init__(self, color, x,y,width,height, text=''):
-        self.color = color
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.text = text
-
     def isOver(self, pos):
         #Pos is the mouse position or a tuple of (x,y) coordinates
         if pos[0] > self.x and pos[0] < self.x + self.surface.width:

@@ -73,15 +73,15 @@ def showHand():
     y=0
     if len(player1.hand) < 8:
         for x in range(len(player1.hand)):
-            carta = identificar(player1.hand[x])    
-            screen.blit(carta,(180+x*110,520)) 
+            # carta = identificar(player1.hand[x])    
+            screen.blit(player1.hand[x].surface,(180+x*110,520)) 
     else:
         for x in range(int(len(player1.hand)/2)):
-            carta = identificar(player1.hand[x])    
-            screen.blit(carta,(220+x*110,470)) 
+            # carta = identificar(player1.hand[x])    
+            screen.blit(player1.hand[x].surface,(220+x*110,470)) 
         for x in range(int(len(player1.hand)/2),len(player1.hand)):
-            carta = identificar(player1.hand[x])    
-            screen.blit(carta,(200+y*110,600))
+            # carta = identificar(player1.hand[x])    
+            screen.blit(player1.hand[x].surface,(200+y*110,600))
             y=y+1
 
 def showDiscard():
