@@ -85,7 +85,7 @@ def showHand():
             y=y+1
 
 def showDiscard():
-    carta = identificar(discards[len(discards)-1])
+    carta = identificar(discards[0])
     screen.blit(carta,(600,250)) 
 
 #Especificamos los detalles de la pantalla
@@ -113,10 +113,10 @@ Deck.shuffleDeck()
 discards = [] #pila donde se van jugando las cartas
 
 #Se reparten las cartas. Cada quien agarra 7 del Deck
-player1.draw(15,Deck)
-player2.draw(5,Deck)
-player3.draw(17,Deck)
-player4.draw(2,Deck)
+player1.draw(7,Deck)
+player2.draw(7,Deck)
+player3.draw(7,Deck)
+player4.draw(7,Deck)
 
 players = [player1, player2, player3,player4]
 
