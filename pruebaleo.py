@@ -7,37 +7,6 @@ import pygame,sys
 # Rutinas graficas:
 #  Estas rutinas se correrán en el while principal
 #  para que vayan actualizando las cartas de los jugadores
-def identificar(cartaId):
-    Mvalues = {
-        1:"_1",
-        2:"_2",
-        3:"_3",
-        4:"_4",
-        5:"_5",
-        6:"_6",
-        7:"_7",
-        8:"_8",
-        9:"_9",
-        "Doble manotazo":"_picker",
-        "Reversa":"_reverse", 
-        "Salta":"_skip" 
-    }
-    Mcolours = {
-        "Azul":"blue",
-        "Rojo":"red",
-        "Amarillo":"yellow",
-        "Verde":"Green"
-    } 
-    if cartaId.colour == "Comodin":
-        carta = pygame.image.load('img/small/wild_color_changer.png').convert()
-        return carta
-    if cartaId.value == "Tira un color":
-        carta = pygame.image.load('img/small/card_back_alt.png').convert()
-        return carta    
-    valor = Mvalues.get(cartaId.value,"card")
-    color = Mcolours.get(cartaId.colour,"_back")
-    carta = pygame.image.load('img/small/{}{}.png'.format(color,valor)).convert()
-    return carta
 
 def showOthers():
     sep = 60
@@ -70,26 +39,66 @@ def showOthers():
             screen.blit(carta,(Cx,Cy)) 
 
 def showHand():
+    for x in range(len(player1.hand)):
+        screen.blit(player1.hand[x].surface,(player1.hand[x].x,player1.hand[x].y))          
+
+def showDiscard():
+    carta = identificar(discards[0])
+    screen.blit(carta,(600,250)) 
+
+def showDeck():
+    carta = pygame.image.load('img/small/card_back.png').convert()
+    screen.blit(carta,(400,250)) 
+
+#Rutinas logicas de dibujo
+#Estas rutinas nos ayudan a asignarle a cada carta su imagen y posicion segun debe ser
+#posteriormente fueron integradas a la clase player pero se mantienen aquí por si acaso se necesitaran
+def identificar(cartaId):
+    Mvalues = {
+        1:"_1",
+        2:"_2",
+        3:"_3",
+        4:"_4",
+        5:"_5",
+        6:"_6",
+        7:"_7",
+        8:"_8",
+        9:"_9",
+        "Doble manotazo":"_picker",
+        "Reversa":"_reverse", 
+        "Salta":"_skip" 
+    }
+    Mcolours = {
+        "Azul":"blue",
+        "Rojo":"red",
+        "Amarillo":"yellow",
+        "Verde":"Green"
+    } 
+    if cartaId.colour == "Comodin":
+        carta = pygame.image.load('img/small/wild_color_changer.png').convert()
+        return carta
+    if cartaId.value == "Tira un color":
+        carta = pygame.image.load('img/small/card_back_alt.png').convert()
+        return carta    
+    valor = Mvalues.get(cartaId.value,"card")
+    color = Mcolours.get(cartaId.colour,"_back")
+    carta = pygame.image.load('img/small/{}{}.png'.format(color,valor)).convert()
+    return carta
+
+def asignHand():
     y=0
     if len(player1.hand) < 8:
         for x in range(len(player1.hand)):
             player1.hand[x].x = 180+x*110
             player1.hand[x].y = 520
-            screen.blit(player1.hand[x].surface,(180+x*110,520)) 
     else:
         for x in range(int(len(player1.hand)/2)):
             player1.hand[x].x = 220+x*110
             player1.hand[x].y = 470
-            screen.blit(player1.hand[x].surface,(220+x*110,470)) 
         for x in range(int(len(player1.hand)/2),len(player1.hand)):
             player1.hand[x].x = 200+y*110
             player1.hand[x].y = 600 
-            screen.blit(player1.hand[x].surface,(200+y*110,600))
             y=y+1
-
-def showDiscard():
-    carta = identificar(discards[0])
-    screen.blit(carta,(600,250)) 
 
 #Especificamos los detalles de la pantalla
 pygame.init()
@@ -101,7 +110,7 @@ clock = pygame.time.Clock()
 bg_surface = pygame.Surface([1200,720])
 bg_surface.fill((46,57,102)) #Este es el color de fondo
 
-#EMPIEZA EL JUEGO
+#EMPIEZA EL JUEGO -------------------------------------------------------------------------------------
 
 #Se crean los jugadores
 player1 = Player()
@@ -129,17 +138,13 @@ playerTurn = 0
 
 discards.append(Deck.cards.pop(0)) #Agarramos la primera carta del mazo para ser la primera sobre la cual jugar
 
+asignHand()#asignamos a cada carta su posicion en pantalla
+
 #Imprimimos valores por consola para constrastar con los graficos
 for x in range(len(player1.hand)):
     print('{}) {} {}'.format(x,player1.hand[x].colour,player1.hand[x].value))
 print("--------------------------------")    
 print(discards[0].colour,discards[0].value)
-
-#Mostramos el sprite del mazo (que proximamente deberia ser cambiado a una maquina lanzacartas jaja)
-def showDeck():
-    carta = pygame.image.load('img/small/card_back.png').convert()
-    screen.blit(carta,(400,250)) 
-
 
 while True:
     pos = pygame.mouse.get_pos()
@@ -150,11 +155,16 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             for x in range(len(player1.hand)):
                 if player1.hand[x].isOver(pos):
-                    print("clicked")    
+                    print('cliqueaste la carta: {} {}'.format(player1.hand[x].colour,player1.hand[x].value))
+        if event.type == pygame.MOUSEMOTION:
+             for x in range(len(player1.hand)):
+                if player1.hand[x].isOver(pos):
+                    player1.asignHand() 
+                    player1.hand[x].y -= 20                              
     screen.blit(bg_surface,(0,0))
     showHand()
     showOthers()  
     showDiscard()
-    showDeck()     
+    showDeck()
     pygame.display.update()
     clock.tick(120)
