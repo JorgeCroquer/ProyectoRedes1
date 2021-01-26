@@ -16,25 +16,24 @@ class Player:
             7:"_7",
             8:"_8",
             9:"_9",
-            "Doble manotazo":"_picker",
+            "Doble manotazo":"_doble",
             "Reversa":"_reverse", 
-            "Salta":"_skip" 
+            "Salta":"_skip",
+            "Cambia color":"_wild", 
+            "Ataque":"_ataque",
+            "Tira un color":"_tiracolor",
+            "Cuadruple manotazo":"_cuadruple"
         }
         Mcolours = {
             "Azul":"blue",
             "Rojo":"red",
             "Amarillo":"yellow",
-            "Verde":"Green"
-        } 
-        if cartaId.colour == "Comodin":
-            carta = pygame.image.load('img/small/wild_color_changer.png').convert()
-            return carta
-        if cartaId.value == "Tira un color":
-            carta = pygame.image.load('img/small/card_back_alt.png').convert()
-            return carta    
-        valor = Mvalues.get(cartaId.value,"card")
-        color = Mcolours.get(cartaId.colour,"_back")
-        carta = pygame.image.load('img/small/{}{}.png'.format(color,valor)).convert()
+            "Verde":"Green",
+            "Comodin":"comodin"
+        }
+        valor = Mvalues.get(cartaId.value,"_back")
+        color = Mcolours.get(cartaId.colour,"card")
+        carta = pygame.image.load('img/{}{}.png'.format(color,valor)).convert()
         return carta
 
     # NOTA: CUANDO EL JUGADOR JUEGE UNA CARTA DEBERIA CORRER ESTA FUNCIÓN

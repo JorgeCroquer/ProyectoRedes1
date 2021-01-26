@@ -18,13 +18,13 @@ def showOthers():
         if len(players[x].hand) >= 15 :
             sep = 20     
         if x == 1:
-            carta = pygame.image.load('img/small/card_back.png').convert() 
+            carta = pygame.image.load('img/card_back.png').convert() 
             carta = pygame.transform.rotate(carta,90)
         if x == 2: 
-            carta = pygame.image.load('img/small/card_back.png').convert()
+            carta = pygame.image.load('img/card_back.png').convert()
             carta = pygame.transform.rotate(carta,180)
         if x == 3: 
-            carta = pygame.image.load('img/small/card_back.png').convert()
+            carta = pygame.image.load('img/card_back.png').convert()
             carta = pygame.transform.rotate(carta,270)     
         for y in range(len(players[x].hand)):
             if x == 1: 
@@ -47,7 +47,7 @@ def showDiscard():
     screen.blit(carta,(600,250)) 
 
 def showDeck():
-    carta = pygame.image.load('img/small/card_back.png').convert()
+    carta = pygame.image.load('img/card_back.png').convert()
     screen.blit(carta,(400,250)) 
 
 #Rutinas logicas de dibujo
@@ -64,25 +64,30 @@ def identificar(cartaId):
         7:"_7",
         8:"_8",
         9:"_9",
-        "Doble manotazo":"_picker",
+        "Doble manotazo":"_doble",
         "Reversa":"_reverse", 
-        "Salta":"_skip" 
+        "Salta":"_skip",
+        "Cambia color":"_wild", 
+        "Ataque":"_ataque",
+        "Tira un color":"_tiracolor",
+        "Cuadruple manotazo":"_cuadruple"
     }
     Mcolours = {
         "Azul":"blue",
         "Rojo":"red",
         "Amarillo":"yellow",
-        "Verde":"Green"
-    } 
-    if cartaId.colour == "Comodin":
-        carta = pygame.image.load('img/small/wild_color_changer.png').convert()
-        return carta
-    if cartaId.value == "Tira un color":
-        carta = pygame.image.load('img/small/card_back_alt.png').convert()
-        return carta    
-    valor = Mvalues.get(cartaId.value,"card")
-    color = Mcolours.get(cartaId.colour,"_back")
-    carta = pygame.image.load('img/small/{}{}.png'.format(color,valor)).convert()
+        "Verde":"Green",
+        "Comodin":"comodin"
+    }
+    # if cartaId.colour == "Comodin":
+    #     carta = pygame.image.load('img/small/wild_color_changer.png').convert()
+    #     return carta
+    # if cartaId.value == "Tira un color":
+    #     carta = pygame.image.load('img/small/card_back_alt.png').convert()
+    #     return carta    
+    valor = Mvalues.get(cartaId.value,"_back")
+    color = Mcolours.get(cartaId.colour,"card")
+    carta = pygame.image.load('img/{}{}.png'.format(color,valor)).convert()
     return carta
 
 def asignHand():
@@ -125,7 +130,7 @@ Deck.shuffleDeck()
 discards = [] #pila donde se van jugando las cartas
 
 #Se reparten las cartas. Cada quien agarra 7 del Deck
-player1.draw(7,Deck)
+player1.draw(15,Deck)
 player2.draw(7,Deck)
 player3.draw(7,Deck)
 player4.draw(7,Deck)
