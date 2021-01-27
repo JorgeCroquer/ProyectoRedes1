@@ -27,7 +27,7 @@ class Deck:
                     self.cards.append(card)
                     self.cards.append(card)
 
-        card = Card("Comodin","Cuádruple manotazo")
+        card = Card("Comodin","Cuadruple manotazo")
         self.cards.append(card)
 
 
