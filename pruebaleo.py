@@ -130,7 +130,7 @@ Deck.shuffleDeck()
 discards = [] #pila donde se van jugando las cartas
 
 #Se reparten las cartas. Cada quien agarra 7 del Deck
-player1.draw(15,Deck)
+player1.draw(7,Deck)
 player2.draw(7,Deck)
 player3.draw(7,Deck)
 player4.draw(7,Deck)
