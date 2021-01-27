@@ -1,6 +1,7 @@
 from Classes.Card import Card
 from Classes.Deck import Deck
 from Classes.Player import Player
+import pygame,sys
 
 #Se crean los jugadores
 player1 = Player()

@@ -69,3 +69,11 @@ class Player:
             elif card.colour == discardCard.colour or card.value == discardCard.value:
                 return True
         return False
+
+    def showHand(self):   #Enseña por consola la mano del jugador
+        print("Tu mano: ")
+        print ("")
+        for card in self.hand:
+            print("1) ", card.color, card.value)
+        print ("")
+        print ("-----------------")
