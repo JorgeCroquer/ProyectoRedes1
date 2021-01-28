@@ -74,10 +74,7 @@ class Player:
                 if card.value == 'Doble manotazo':
                     return True
             #si no tiene agarra dos
-            for pressButton in range(drawtimes):
-                print("Presiona el boton...")
-                msvcrt.getch()
-                print("*lo pisa*")
+            for pressButton in range(drawtimes*2):
                 self.hand.extend(deck.spitOutCards())
         else:
             #hay que buscar si tiene una carta que coincida en color o valor

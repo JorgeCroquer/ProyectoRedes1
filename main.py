@@ -52,7 +52,10 @@ playing = True #Variable que indica si el juego sigue activo
 #Bucle principal
 while playing:
 
-    
+    #Verificamos que el mazo tenga mas de 10 cartas, para que no se quede vacio
+    if len(Deck.cards) <= 30:
+        for i in range(len(discards)-1):
+            Deck.cards.append(discards.pop(0))   
 
     print ("")
     print ("-------------")
@@ -144,23 +147,24 @@ while playing:
                         print("")
                         playerChosen = -1
                 #atacamos
-                for times in range(1):
+                times = 0
+                for times in range(2):
                     players[playerChosen].hand.extend(Deck.spitOutCards())
                 print("Atacaste al jugador {}".format(playerChosen+1))
                 print("")
             elif discards[-1].value== "Cuadruple manotazo":
+                times = 0
                 #Si esta en el ultimo jugador, le toca agarrar al primero (+direction)
                 if playerTurn == len(players)-1 and Direction == 1:
-                    for time in range(3):                   
+                    for times in range(4):                   
                         players[0].hand.extend(Deck.spitOutCards())
                 #Si esta en el primero, le toca agarrar al ultimo (-direction)
                 elif playerTurn == 0 and Direction == -1:
-                    for time in range(3):                   
+                    for times in range(4):                   
                         players[len(players-1)].hand.extend(Deck.spitOutCards())
                 else:
-                    for time in range (3):
-                        players[playerTurn+Direction].hand.extend(Deck.spitOutCards()) 
-                
+                    for times in range (4):
+                        players[playerTurn+Direction].hand.extend(Deck.spitOutCards())                
 
 
             #variable aux
@@ -220,6 +224,7 @@ while playing:
             print('')
             print('Bajaste {} cartas de color {}'.format(discardsCount, currentColour)) 
             print('') 
+            currentColour = discards[-1].colour
         else: 
             #Es una carta normal
             print("Es normal")
@@ -228,13 +233,14 @@ while playing:
 
 
     else:
-        #Si no pudo jugar porque agarró 2, entonces hay que borrar la cadena de doble manotazo3
+        #Si no pudo jugar porque agarró 2, entonces hay que borrar la cadena de doble manotazo
         if (discards[-1].value == 'Doble manotazo'):
             DobleManotazoTimes = 0
         print("No puedes jugar. Tienes que pisar el boton de la maquina")
         print("Presione una tecla para continuar...")
         msvcrt.getch()
         print("*lo pisa*")
+       
         players[playerTurn].hand.extend(Deck.spitOutCards())
         
 

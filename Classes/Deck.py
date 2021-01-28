@@ -40,7 +40,7 @@ class Deck:
 
     def spitOutCards(self):
         spittedOutCards = []
-        for x in range(random.randint(0,9)):       
+        for x in range(random.randint(0,5)):       
             spittedOutCards.append(self.cards.pop(0))
         return spittedOutCards
 
