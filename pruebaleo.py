@@ -141,8 +141,12 @@ Direction = 1 #1 para sentido horario. -1 para sentido antihorario
 
 playerTurn = 0
 
-discards.append(Deck.cards.pop(0)) #Agarramos la primera carta del mazo para ser la primera sobre la cual jugar
 
+discards.append(Deck.cards.pop(0)) #Agarramos la primera carta del mazo para ser la primera sobre la cual jugar
+while discards[-1].colour == "Comodin":
+    discards.append(Deck.cards.pop(0)) #Si la primer carta salio comodin, se pone otra
+ 
+playing = True #Variable que indica si el juego sigue activo
 asignHand()#asignamos a cada carta su posicion en pantalla
 
 #Imprimimos valores por consola para constrastar con los graficos
@@ -151,7 +155,9 @@ for x in range(len(player1.hand)):
 print("--------------------------------")    
 print(discards[0].colour,discards[0].value)
 
-while True:
+while playing:
+
+    
     pos = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -165,7 +171,13 @@ while True:
              for x in range(len(player1.hand)):
                 if player1.hand[x].isOver(pos):
                     player1.asignHand() 
-                    player1.hand[x].y -= 20                              
+                    player1.hand[x].y -= 20  
+
+
+    
+        
+
+
     screen.blit(bg_surface,(0,0))
     showHand()
     showOthers()  

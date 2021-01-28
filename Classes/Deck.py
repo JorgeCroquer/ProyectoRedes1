@@ -6,23 +6,23 @@ import random
 
 class Deck:
     cards = []
-
+    colours = ["Rojo","Verde","Azul","Amarillo", "Comodin"]
+    values = [1,2,3,4,5,6,7,8,9,"Doble manotazo", "Reversa", "Salta", "Tira un color"]
+    wilds = ["Cambia color", "Ataque"]
     #Contructor
     def __init__(self):
-        colours = ["Rojo","Verde","Azul","Amarillo", "Comodin"]
-        values = [1,2,3,4,5,6,7,8,9,"Doble manotazo", "Reversa", "Salta", "Tira un color"]
-        wilds = ["Cambia color", "Ataque"]
+        
 
-        for colour in colours:
+        for colour in self.colours:
             if colour == "Comodin":
-                    for wild in wilds:
+                    for wild in self.wilds:
                         card = Card (colour, wild)
                         self.cards.append(card)
                         self.cards.append(card)
                         self.cards.append(card)
                         self.cards.append(card)
             else:
-                for value in values:        
+                for value in self.values:        
                     card = Card(colour, value)
                     self.cards.append(card)
                     self.cards.append(card)
@@ -38,8 +38,13 @@ class Deck:
             randPosition = random.randint(0,len(self.cards)-1)
             self.cards[cardPosition], self.cards[randPosition] = self.cards[randPosition], self.cards[cardPosition]
 
+    def spitOutCards(self):
+        spittedOutCards = []
+        for x in range(random.randint(0,9)):       
+            spittedOutCards.append(self.cards.pop(0))
+        return spittedOutCards
 
-
+    
 
 
     
