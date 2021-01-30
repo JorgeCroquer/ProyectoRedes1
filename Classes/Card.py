@@ -4,13 +4,13 @@ import pygame
 class Card:
     
     def __init__(self, colour, value
-    # , surface='',x=0,y=0
+    ,surface='',x=0,y=0
     ):
         self.colour = colour
         self.value = value
-        # self.surface = surface
-        # self.x = x
-        # self.y = y
+        self.surface = surface
+        self.x = x
+        self.y = y
         
     def isOver(self, pos):
         #Pos is the mouse position or a tuple of (x,y) coordinates

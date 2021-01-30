@@ -1,5 +1,6 @@
 from Classes.Card import Card
 import random
+import pygame,sys
 
 
 # clase para el mazo
@@ -17,6 +18,7 @@ class Deck:
             if colour == "Comodin":
                     for wild in self.wilds:
                         card = Card (colour, wild)
+                        card.surface = self.identificar(card)
                         self.cards.append(card)
                         self.cards.append(card)
                         self.cards.append(card)
@@ -24,13 +26,45 @@ class Deck:
             else:
                 for value in self.values:        
                     card = Card(colour, value)
+                    card.surface = self.identificar(card)
                     self.cards.append(card)
                     self.cards.append(card)
 
         card = Card("Comodin","Cuadruple manotazo")
+        card.surface = self.identificar(card)
         self.cards.append(card)
 
-
+    def identificar(self,cartaId):
+        Mvalues = {
+            1:"_1",
+            2:"_2",
+            3:"_3",
+            4:"_4",
+            5:"_5",
+            6:"_6",
+            7:"_7",
+            8:"_8",
+            9:"_9",
+            "Doble manotazo":"_doble",
+            "Reversa":"_reverse", 
+            "Salta":"_skip",
+            "Cambia color":"_wild", 
+            "Ataque":"_ataque",
+            "Tira un color":"_tiracolor",
+            "Cuadruple manotazo":"_cuadruple"
+        }
+        Mcolours = {
+            "Azul":"blue",
+            "Rojo":"red",
+            "Amarillo":"yellow",
+            "Verde":"Green",
+            "Comodin":"comodin"
+        }
+        valor = Mvalues.get(cartaId.value,"_back")
+        color = Mcolours.get(cartaId.colour,"card")
+        carta = pygame.image.load('img/{}{}.png'.format(color,valor)).convert()        
+        return carta
+    
     #Metodo para barajear el mazo
     def shuffleDeck(self):
         for cardPosition in range(len(self.cards)):
