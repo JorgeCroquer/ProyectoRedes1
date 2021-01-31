@@ -103,7 +103,7 @@ while playing:
                     print("No puedes jugar esa carta")
                     numCardChosen = -1 #0 otra vez, para que el ciclo se repita
 
-                        
+           
             except ValueError: 
                 #Puso un caracter invalido
                 print("Entrada invalida")

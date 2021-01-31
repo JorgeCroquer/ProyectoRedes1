@@ -2,10 +2,11 @@ from Classes.Player import Player
 from Classes.Player import Player
 from Classes.Card import Card
 from Classes.Deck import Deck
+from Classes.Buttons import Button
 import pygame,sys
 import msvcrt
 
-# Rutinas graficas:
+# RUTINAS GRAFICAS:
 #  Estas rutinas se correrán en el while principal
 #  para que vayan actualizando las cartas de los jugadores
 
@@ -56,7 +57,59 @@ def showLabel():
     labelRect = labelSurface.get_rect(center =(550,450))
     screen.blit(labelSurface,labelRect)
 
-#Rutinas logicas de dibujo
+def showColorButtons():
+    for x in range(len(botonesC)):
+        screen.blit(botonesC[x].surface,(botonesC[x].x,botonesC[x].y))
+
+def showPlayerButtons():
+    for x in range(len(botonesJ)):
+        screen.blit(botonesJ[x].surface,(botonesJ[x].x,botonesJ[x].y))
+#creamos los 4 botones para seleccionar un color
+def createColorButtons():
+    botonRojo = pygame.image.load('img/boton_rojo_sombra1.png')
+    x = 180
+    y = 300
+    boton = Button(botonRojo,x,y)
+    botonesC.append(boton)
+    botonRojo = pygame.image.load('img/boton_verde_sombra1.png')
+    x +=200
+    y = 300 
+    boton = Button(botonRojo,x,y)
+    botonesC.append(boton)
+    botonRojo = pygame.image.load('img/boton_azul_sombra1.png')
+    x +=200
+    y = 300 
+    boton = Button(botonRojo,x,y)
+    botonesC.append(boton)
+    botonRojo = pygame.image.load('img/boton_amarillo_sombra1.png')
+    x +=200
+    y = 300
+    boton = Button(botonRojo,x,y) 
+    botonesC.append(boton)
+
+#Creamos 3 botones para seleccionar el jugador
+def createPlayerButtons():
+    botonsurface =  game_font.render('J1',True,(255,255,255))
+    x = 180
+    y = 300
+    boton = Button(botonsurface,x,y)
+    botonesJ.append(boton)
+    botonsurface =  game_font.render('J2',True,(255,255,255))
+    x = 180
+    y = 300
+    boton = Button(botonsurface,x,y)
+    botonesJ.append(boton) 
+    botonsurface =  game_font.render('J3',True,(255,255,255))
+    x = 180
+    y = 300
+    boton = Button(botonsurface,x,y)
+    botonesJ.append(boton)
+    botonsurface =  game_font.render('J4',True,(255,255,255))
+    x = 180
+    y = 300
+    boton = Button(botonsurface,x,y)
+    botonesJ.append(boton)    
+#RUTINAS LOGICAS DE DIBUJO
 #Estas rutinas nos ayudan a asignarle a cada carta su imagen y posicion segun debe ser
 #posteriormente fueron integradas a la clase player pero se mantienen aquí por si acaso se necesitaran
 def identificar(cartaId):
@@ -122,6 +175,12 @@ game_font = pygame.font.Font('OpenSans-Bold.ttf',30)
 bg_surface = pygame.Surface([1200,720])
 bg_surface.fill((46,57,102)) #Este es el color de fondo
 
+#Variables del juego
+labelText = 'Que empiece el juego' #variable para el texto en pantalla
+botonesC = [] #arreglo para guardar los botones de selccion de color
+createColorButtons() #llenamos el arreglo de arriba
+botonesJ = []
+create
 #EMPIEZA EL JUEGO -------------------------------------------------------------------------------------
 
 #Se crean los jugadores
@@ -168,9 +227,8 @@ currentColour = discards[-1].colour #Variable para gestionar los cambios de colo
 DobleManotazoTimes= 0
  
 playing = True #Variable que indica si el juego sigue activo
-asignHand()#asignamos a cada carta su posicion en pantalla
-labelText = 'Que empiece el juego' #variable para el texto en pantalla
 
+asignHand()#asignamos a cada carta su posicion en pantalla
 
 while playing:
     pos = pygame.mouse.get_pos()
@@ -312,6 +370,7 @@ while playing:
                 while playerChosen == -1:
                     try:
                         playerChosen= int(input('Elije un jugador para atacar: '))-1
+                        labelText = 'Elije un jugador para atacar: '
                         if not 0 <= playerChosen <= len(players)-1:
                             raise Exception
                         if playerChosen == playerTurn:
@@ -349,7 +408,6 @@ while playing:
                     for times in range (4):
                         players[playerTurn+Direction].hand.extend(Deck.spitOutCards())
                         players[playerTurn].asignHand #Rutina gráfica para reordenar las cartas del jugador                
-
             #variable aux
             i = 0
             #Mostramos los colores
@@ -361,22 +419,54 @@ while playing:
             #Validamos su eleccion
             colourChosen = -1
             while colourChosen == -1:
-                try:
-                    colourChosen= int(input('Elije un color: '))-1
-                    if not 0 <= colourChosen <= 3:
-                        raise Exception
-                except ValueError:
-                    print("Entrada invalida")
-                    print("")
-                    colourChosen = -1
-                except Exception:
-                    print("Numero invalido")
-                    print("")
-                    colourChosen = -1
+                if playerTurn == 0:
+                    colorNotChosen = True
+                    while colorNotChosen:
+                        pos = pygame.mouse.get_pos()
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                for x in range(len(botonesC)):
+                                    if botonesC[x].isOver(pos):
+                                        colourChosen= x
+                                        colorNotChosen = False
+                            if event.type == pygame.MOUSEMOTION:
+                                for x in range(len(botonesC)):
+                                    if botonesC[x].isOver(pos):
+                                        botonesC[x].setSurface2(x)
+                                    else:
+                                        botonesC[x].setSurface1(x)    
+                        #El juego necesita actualizar los graficos en cada ciclo para poder funcionar
+                        screen.blit(bg_surface,(0,0))
+                        showHand()
+                        showOthers()  
+                        showDiscard()
+                        showDeck()
+                        showLabel()
+                        showColorButtons()
+                        pygame.display.update()
+                        clock.tick(120)
+                else:
+                    try:
+                        colourChosen= int(input('Elije un color: '))-1
+                        labelText = 'Elije un color'
+                        if not 0 <= colourChosen <= 3:
+                            raise Exception
+                    except ValueError:
+                        print("Entrada invalida")
+                        print("")
+                        colourChosen = -1
+                    except Exception:
+                        print("Numero invalido")
+                        print("")
+                        colourChosen = -1
             #Cambiamos el color
             currentColour = colourList[colourChosen]
             print('Elegiste el color {}'.format(Deck.colours[colourChosen]))
-
+            labelText = 'Elegiste el color {}'.format(Deck.colours[colourChosen])
+            
         #Vamos con las demas
         elif discards[-1].value == "Doble manotazo":
             DobleManotazoTimes += 1
