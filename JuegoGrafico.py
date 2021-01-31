@@ -51,6 +51,11 @@ def showDeck():
     carta = pygame.image.load('img/card_back.png').convert()
     screen.blit(carta,(400,250)) 
 
+def showLabel():
+    labelSurface = game_font.render(labelText,True,(255,255,255))
+    labelRect = labelSurface.get_rect(center =(550,450))
+    screen.blit(labelSurface,labelRect)
+
 #Rutinas logicas de dibujo
 #Estas rutinas nos ayudan a asignarle a cada carta su imagen y posicion segun debe ser
 #posteriormente fueron integradas a la clase player pero se mantienen aquí por si acaso se necesitaran
@@ -111,6 +116,7 @@ pygame.init()
 screen = pygame.display.set_mode((1200,720))
 pygame.display.set_caption("UNO Attack")
 clock = pygame.time.Clock()
+game_font = pygame.font.Font('OpenSans-Bold.ttf',30)
 
 #Creamos el fondo
 bg_surface = pygame.Surface([1200,720])
@@ -163,6 +169,7 @@ DobleManotazoTimes= 0
  
 playing = True #Variable que indica si el juego sigue activo
 asignHand()#asignamos a cada carta su posicion en pantalla
+labelText = 'Que empiece el juego' #variable para el texto en pantalla
 
 
 while playing:
@@ -180,6 +187,7 @@ while playing:
     print ("-------------")
     print ("")
     print("jugador {}".format(playerTurn+1))
+    labelText = 'Es el turno del jugador{}'.format(playerTurn+1)
     print ("")
         
     #mostramos la carta del tope
@@ -221,6 +229,7 @@ while playing:
                     showOthers()  
                     showDiscard()
                     showDeck()
+                    showLabel()
                     pygame.display.update()
                     clock.tick(120)
                 #Esta linea es complicada.
@@ -240,6 +249,7 @@ while playing:
                     showOthers()  
                     showDiscard()
                     showDeck()
+                    showLabel()
                     pygame.display.update()
                     clock.tick(120)     
                 else:
@@ -271,6 +281,7 @@ while playing:
                         showOthers()  
                         showDiscard()
                         showDeck()
+                        showLabel()
                         pygame.display.update()
                         clock.tick(120)      
                     else:
@@ -426,6 +437,7 @@ while playing:
     showOthers()  
     showDiscard()
     showDeck()
+    showLabel()
     pygame.display.update()
     clock.tick(120)
 
