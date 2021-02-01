@@ -49,9 +49,7 @@ def showDiscard():
     screen.blit(carta,(600,250)) 
 
 def showDeck():
-    carta = pygame.image.load('img/UNO_button.png')
-    carta = pygame.transform.scale(carta,(150,150))
-    screen.blit(carta,(380,250)) 
+    screen.blit(botonUno.surface,(botonUno.x,botonUno.y)) 
 
 def showLabel():
     labelSurface = game_font.render(labelText,True,(255,255,255))
@@ -66,6 +64,11 @@ def showPlayerButtons():
     for x in range(len(botonesJ)):
         if (x != playerTurn):
             screen.blit(botonesJ[x].surface,(botonesJ[x].x,botonesJ[x].y))
+
+def showFlechas():
+    screen.blit(flecha1,(900,150))
+    screen.blit(flecha2,(150,400))   
+    
 #creamos los 4 botones para seleccionar un color
 def createColorButtons():
     botonRojo = pygame.image.load('img/boton_rojo_sombra1.png')
@@ -173,7 +176,15 @@ bg_surface = pygame.Surface([1200,720])
 bg_surface.fill((46,57,102)) #Este es el color de fondo
 
 #Creamos las flechas de direccion
-flecha_surface = pygame.image.load('img/direccion1.png')
+flecha1 = pygame.image.load('img/flecha3.png')
+flecha1 = pygame.transform.rotozoom(flecha1,-90,0.1)
+flecha2 = pygame.image.load('img/flecha3.png')
+flecha2 = pygame.transform.rotozoom(flecha2,90,0.1)
+
+#Creamos el boton UNO
+carta = pygame.image.load('img/UNO_button.png') 
+carta = pygame.transform.scale(carta,(150,150))
+botonUno = Button(carta,380,250)
 
 #Variables del juego
 labelText = 'Que empiece el juego' #variable para el texto en pantalla
@@ -181,6 +192,7 @@ botonesC = [] #arreglo para guardar los botones de selccion de color
 createColorButtons() #llenamos el arreglo de arriba
 botonesJ = [] #arreglo para guardar los botones de seleccion de jugador
 createPlayerButtons()
+
 #EMPIEZA EL JUEGO -------------------------------------------------------------------------------------
 
 #Se crean los jugadores
@@ -196,11 +208,11 @@ Deck.shuffleDeck()
 discards = [] #pila donde se van jugando las cartas
 
 #Se reparten las cartas. Cada quien agarra 7 del Deck
-# for x in range(7):            (Este segmento lo estoy usando para ciertas pruebas)
-#     card = Card('Rojo',1)
-#     card.surface = identificar(card)
-#     player1.hand.append(card)
-player1.draw(7,Deck)
+for x in range(7):          #(Este segmento lo estoy usando para ciertas pruebas)
+    card = Card('Rojo','Reversa')
+    card.surface = identificar(card)
+    player1.hand.append(card)
+#player1.draw(7,Deck)
 player2.draw(7,Deck)
 player3.draw(7,Deck)
 player4.draw(7,Deck)
@@ -286,6 +298,7 @@ while playing:
                                     player1.hand[x].y -= 20
                     #El juego necesita actualizar los graficos en cada ciclo para poder funcionar
                     screen.blit(bg_surface,(0,0))
+                    showFlechas()
                     showHand()
                     showOthers()  
                     showDiscard()
@@ -307,6 +320,7 @@ while playing:
                     players[playerTurn].asignHand #Rutina gráfica para reordenar las cartas del jugador
                     screen.blit(bg_surface,(0,0))
                     showHand()
+                    showFlechas()
                     showOthers()  
                     showDiscard()
                     showDeck()
@@ -320,6 +334,7 @@ while playing:
                 players[playerTurn].asignHand #Rutina gráfica para reordenar las cartas del jugador
                 screen.blit(bg_surface,(0,0))
                 showHand()
+                showFlechas()
                 showOthers()  
                 showDiscard()
                 showDeck()
@@ -348,6 +363,7 @@ while playing:
                         players[playerTurn].asignHand #Rutina gráfica para reordenar las cartas del jugador
                         screen.blit(bg_surface,(0,0))
                         showHand()
+                        showFlechas()
                         showOthers()  
                         showDiscard()
                         showDeck()
@@ -403,6 +419,7 @@ while playing:
                             #El juego necesita actualizar los graficos en cada ciclo para poder funcionar
                             screen.blit(bg_surface,(0,0))
                             showHand()
+                            showFlechas()
                             showOthers()  
                             showDiscard()
                             showDeck()
@@ -484,6 +501,7 @@ while playing:
                         #El juego necesita actualizar los graficos en cada ciclo para poder funcionar
                         screen.blit(bg_surface,(0,0))
                         showHand()
+                        showFlechas()
                         showOthers()  
                         showDiscard()
                         showDeck()
@@ -516,6 +534,10 @@ while playing:
         elif discards[-1].value == "Reversa":
             Direction *= -1
             currentColour = discards[-1].colour
+            flecha1 = pygame.transform.flip(flecha1,False,True) #estas cuatro lineas las quise hacer en una funcion cambiarFlechas()
+            flecha1 = pygame.transform.rotozoom(flecha1,90,1)# pero no se por que no funcionó, asi que lo puse aquí
+            flecha2 = pygame.transform.flip(flecha2,False,True)
+            flecha2 = pygame.transform.rotozoom(flecha2,90,1)
         elif discards[-1].value == "Salta":
             if playerTurn == len(players)-1 and Direction == 1:
                 playerTurn = 0
@@ -549,7 +571,7 @@ while playing:
             #Si no pudo jugar porque agarró 2, entonces hay que borrar la cadena de doble manotazo
             if (discards[-1].value == 'Doble manotazo'):
                 DobleManotazoTimes = 0 
-            labelText = 'No puedes jugar ninguna carta, presiona cualquiera de las cartas'    
+            labelText = 'No puedes jugar ninguna carta, presiona el boton UNO'    
             buttonNotPressed = True
             while buttonNotPressed:
                 pos = pygame.mouse.get_pos()
@@ -559,17 +581,19 @@ while playing:
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN: #Detectamos el click
                         for x in range(len(player1.hand)):
-                            if player1.hand[x].isOver(pos):
+                            if botonUno.isOver(pos):
                                 players[playerTurn].hand.extend(Deck.spitOutCards())
                                 buttonNotPressed = False
                     if event.type == pygame.MOUSEMOTION: #Efecto hover de carta
                         for x in range(len(player1.hand)):
-                            if player1.hand[x].isOver(pos):
-                                player1.asignHand() 
-                                player1.hand[x].y -= 20
+                            if botonUno.isOver(pos):
+                                botonUno.setBotonUno(2)
+                            else:    
+                                botonUno.setBotonUno(1)
                 #El juego necesita actualizar los graficos en cada ciclo para poder funcionar
                 screen.blit(bg_surface,(0,0))
                 showHand()
+                showFlechas()
                 showOthers()  
                 showDiscard()
                 showDeck()
@@ -586,6 +610,7 @@ while playing:
             print("*lo pisa*")
             players[playerTurn].hand.extend(Deck.spitOutCards())
             showHand()
+            showFlechas()
             showOthers()  
             showDiscard()
             showDeck()
@@ -604,6 +629,7 @@ while playing:
 
     screen.blit(bg_surface,(0,0))
     showHand()
+    showFlechas()
     showOthers()  
     showDiscard()
     showDeck()

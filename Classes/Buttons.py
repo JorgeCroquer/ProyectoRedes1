@@ -9,7 +9,6 @@ class Button:
         self.surface = surface
         self.x = x
         self.y = y
-        pygame.init()
 
     def setSurface1(self,numero):
         if numero == 0:
@@ -50,6 +49,14 @@ class Button:
             self.surface =  font.render('J3',True,(235, 64, 52))
         if numero == 3:
             self.surface =  font.render('J4',True,(235, 64, 52))
+
+    def setBotonUno(self,numero):
+        if numero == 1:
+            self.surface = pygame.image.load('img/UNO_button.png')
+            self.surface = pygame.transform.scale(self.surface,(150,150))
+        if numero == 2:
+            self.surface =  pygame.image.load('img/UNO_button_pressed.png')
+            self.surface = pygame.transform.scale(self.surface,(150,150))    
 
     def isOver(self, pos):
         #Pos is the mouse position or a tuple of (x,y) coordinates
