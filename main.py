@@ -52,6 +52,9 @@ playing = True #Variable que indica si el juego sigue activo
 #Bucle principal
 while playing:
 
+
+
+
     #Verificamos que el mazo tenga mas de 10 cartas, para que no se quede vacio
     if len(Deck.cards) <= 30:
         for i in range(len(discards)-1):
@@ -103,7 +106,7 @@ while playing:
                     print("No puedes jugar esa carta")
                     numCardChosen = -1 #0 otra vez, para que el ciclo se repita
 
-           
+                        
             except ValueError: 
                 #Puso un caracter invalido
                 print("Entrada invalida")
@@ -210,7 +213,7 @@ while playing:
             currentColour = discards[-1].colour
             print("Salta") #este print() es solo para que el programa pueda compilar mientras
         elif discards[-1].value == "Tira un color":
-
+            currentColour = discards[-1].colour
             #Variable aux
             i= 0
             #Contador de cartas bajadas
