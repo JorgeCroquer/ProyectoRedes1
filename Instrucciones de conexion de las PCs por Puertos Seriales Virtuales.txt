@@ -1,0 +1,63 @@
+El programa funciona para 2 o mas maquinas (sin limite)
+
+Todas las siguientes especificaciones son para usar el programa con puertos seriales virtuales.
+
+La siguiente configuracion es para correr el programa en una misma PC, o sea, se van a correr tantas
+instancias del programa, como PCs queramos conectar.
+
+Para que funcione con 2 maquinas, el puerto serial de entrada y salida de cada PC
+debe ser el mismo y deben estar conectados entre las 2 PCs.
+Creando los puertos vituales COM11 y COM12 virtuales y conectados en pareja, el puerto serial
+de entrada y salida de una PC debe ser COM11 y el de la otra COM12.
+
+Para mayor numero de PCs conectadas, se deben crear tantos pares de puertos seriales conectados
+como PCs esten conectadas, asi por ejemplo, para 4 PCs, creamos:
+
+Par 1 [COM11, COM12], conectados cruzados, como viene por defecto en el programa Virtual Serial Port
+Par 2 [COM13, COM14], conectados cruzados, como viene por defecto en el programa Virtual Serial Port
+Par 3 [COM15, COM16], conectados cruzados, como viene por defecto en el programa Virtual Serial Port
+Par 4 [COM17, COM18], conectados cruzados, como viene por defecto en el programa Virtual Serial Port
+
+Y las PCs (cada programa ejecutandose), deben configurarse de la siguiente manera:
+
+PC 1 Puerto serial de entrada COM18, Puerto serial de salida COM11
+PC 2 Puerto serial de entrada COM12, Puerto serial de salida COM13
+PC 1 Puerto serial de entrada COM14, Puerto serial de salida COM15
+PC 1 Puerto serial de entrada COM16, Puerto serial de salida COM17
+
+Como COM17 esta conectado con COM18, COM11 con COM12, COM13 con COM14 y COM15 con COM16:
+
+la informacion que salga por COM12 de PC 1, va a entrar por COM12 de la PC 2,
+la informacion que salga por COM13 de PC 2, va a entrar por COM14 de la PC 3,
+la informacion que salga por COM15 de PC 3, va a entrar por COM16 de la PC 4,
+la informacion que salga por COM17 de PC 1, va a entrar por COM18 de la PC 1,
+
+Cuando todos los programas se esten ejecutando y en teoria los cables esten conectados, el
+programa pedira que se toque una tecla para inicar la sincronizacion y deteccion de los PCs 
+que esten conectados. Esto debe ser asi (por los momentos no he podido hacerlo de otra manera,
+ya que los puertos deben estar asignados a alguna PC para poder recibir data).
+
+El programa conecta todas las PCs, determina el numero de equipos y luego pide a los usuarios
+de las PCs, que inicien la partida. De esta manera el primero que inicie la partida sera la PC
+"Maestra" y las demas seran "Esclavas". Este usuario podra configurar la partida con lo que sea
+que se vaya a configurar y empezara la partida.
+
+Todos los programas ejecutandose saben si son "Maestros" o "Esclavos", por lo tanto correra el
+codigo que les corresponde, ya que todos los programas tendran que ser iguales.
+
+En la parte exclusiva de "Maestros" o "Esclavos", lo que esta hecho es que el "Maestro" pueda mandar
+un mensaje a cualquier PC, y esta PC lo recibe y tiene que saber que hacer, luego le contesta al
+"Maestro" con lo que tenga que contestarle, para que el "Maestro" sepa que hacer.
+
+Creo que con esto bastara para ejecutar el juego. Se puede optimizar. Tendriamos que hablarlo a 
+medida que se vaya desarrollando.
+
+Pienso que se deberia crear una especie de lenguaje en forma de mensaje, que las PCs se puedan mandar
+entre si (por los momentos de "Maestro" a "Esclava" y de "Esclava" a "Maestro". Como esta hecho por
+ahora la "Esclava" responde cuando el "Maestro" pregunta, pero podria cambiarse si hace falta.
+
+Yo lo he probado con el Visual Studio Code para debuggear y ejecuto 3 instancias del programa para
+que esten 4 PCs conectadas. Esto lo hago abriendo 3 ventanas "cmd" y llamando a "python program2.py"
+en cada una de ellas. Configuro y cuando esten listas pulso una tecla en cada pantalla para que 
+inicie la sincronizacion (no tiene que ser al mismo tiempo todas), lo importante es que todas esten
+a la espera de pulsar una tecla para comenzar.
