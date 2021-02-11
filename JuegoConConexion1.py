@@ -829,7 +829,7 @@ if(maestro==1):    # programa maestro"
                         spittedOutCardsT = Deck.spitOutCards()
                         # player[playerChosen].hand.extend(Deck.spitOutCards()) 
                         for card in spittedOutCardsT:
-                            player[playerTurn].hand.append(card) # copia de la maestra
+                            player[playerChosen].hand.append(card) # copia de la maestra
                             if(playerChosen>0):   # si es esclava enviar las cartas a la pila esclava
                                 color = card.colour
                                 valor = card.value
@@ -1193,11 +1193,11 @@ else:              # programa esclavo"
                               
                 elif (str_accion == "mostrar___"):    # Mostrar mano, no espera tecla
                     coma = str_mensaje.find(',')
-                    color = str_mensaje[0 : coma]
-                    valor = str_mensaje[coma + 1 : len(str_mensaje)] # por el '\n'print("")
-                    print("--------------------------")
-                    print("")
-                    print(f"Jugador {num_jugador+1} es tu turno")
+                    valor = str_mensaje[0 : coma]
+                    color = str_mensaje[coma + 1 : len(str_mensaje)] # por el '\n'print("")
+                    # print("--------------------------")
+                    # print("")
+                    # print(f"Jugador {num_jugador+1} es tu turno")
                     print("")
                     print("Carta en el tope de la pila: "+ valor + " " + color)
                     print("")
